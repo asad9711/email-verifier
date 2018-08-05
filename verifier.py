@@ -18,9 +18,16 @@ mx_record = dns_records[0].exchange
 mx_record = str(mx_record)
 
 smtp_server = smtplib.SMTP()
+
 smtp_server.set_debuglevel(0)
 
 smtp_server.connect(mx_record)
+
+if 'google' in mx_record:
+ # "ehlo() and starttls() to be used for the case of smtp server of gmail"
+    smtp_server.ehlo()
+    smtp_server.starttls()
+
 smtp_server.mail(sender=sender_mail_id)
 status_code, resp_msg = smtp_server.rcpt(recip=rcpt_mail_id)
 smtp_server.quit()
